@@ -5,7 +5,13 @@ module.exports = {
     "./src/javascript/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        'sans': ['Roboto','Helvetica', 'Arial', 'sans-serif'],
+        'serif': ['ui-serif', 'Georgia'],
+        'mono': ['ui-monospace', 'SFMono-Regular'],
+      }
+    },
   },
   plugins: [],
 }
