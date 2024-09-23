@@ -1,5 +1,5 @@
 const numbers = "0123456789"
-const operators = "+-/*="
+const operators = "+-*=÷"
 
 const calculatorStack = [];
 let operand1="";
