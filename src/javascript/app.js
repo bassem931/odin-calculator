@@ -10,6 +10,7 @@ let enterOp1Mode = true;
 let enterOp2Mode = false;
 let operatorAfter1Mode = false;
 let operatorAfter2Mode = false;
+let isEqualClicked = false;
 
 function add(a, b) {
     return a + b;
@@ -118,7 +119,7 @@ function setSecondOperation(buttonVal) {
     if (buttonVal === "=") {
         calculatorStack.splice(0, 4, result);
         displayToScreen(result, "");
-        // enterOp1Mode = 
+        isEqualClicked = true
     } else {
         calculatorStack.splice(0, 3, result);
         displayToScreen(result);
@@ -134,6 +135,14 @@ function setSecondOperation(buttonVal) {
 function updateValues(buttonVal) {
 
     if (numbers.includes(buttonVal)) {
+        if (isEqualClicked) {
+            enterOp1Mode = true;
+            calculatorStack.pop();
+            operand1 = buttonVal;
+            displayToScreen(buttonVal)
+            isEqualClicked = false;
+            return;
+        }
         let isValidNum = false
         if (enterOp1Mode) {
             isValidNum = checkNumValidity(buttonVal, operand1)
@@ -146,6 +155,16 @@ function updateValues(buttonVal) {
         }
 
     } else if (operators.includes(buttonVal)) {
+        if (isEqualClicked) {
+            if (buttonVal === "=") {
+                isEqualClicked = true;
+                return;
+            }
+            calculatorStack.push(buttonVal);
+            displayToScreen(operand1)
+            isEqualClicked = false;
+            return;
+        }
         if (operatorAfter1Mode) {
             setFirstOperation(buttonVal);
         }
