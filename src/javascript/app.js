@@ -6,10 +6,10 @@ const calculatorStack = [];
 let operand1 = "";
 let operand2 = "";
 
-let enterOp1Mode = true;
-let enterOp2Mode = false;
-let operatorAfter1Mode = false;
-let operatorAfter2Mode = false;
+let isOp1Mode = true;
+let isOp2Mode = false;
+let isOpAfter1Mode = false;
+let isOpAfter2Mode = false;
 let isEqualClicked = false;
 
 function add(a, b) {
@@ -26,7 +26,8 @@ function multiply(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
-        return "cannot divide by zero"
+        displayToScreen("division Error Press C", "")
+        return "0 div";
     }
     return a / b;
 }
@@ -54,9 +55,10 @@ function reset() {
     calculatorStack.length = 0;
     operand1 = "";
     operand2 = "";
-    enterOp1Mode = true;
-    enterOp2Mode = false;
+    isOp1Mode = true;
+    isOp2Mode = false;
     isOperatorMode = false;
+    isEqualClicked = false;
     displayToScreen("", "");
 }
 
@@ -94,26 +96,26 @@ function checkNumValidity(buttonVal, num) {
 function setFirstOperand(buttonVal) {
     operand1 = operand1 + buttonVal;
     displayToScreen(operand1);
-    operatorAfter1Mode = true;
+    isOpAfter1Mode = true;
 }
 
 function setSecondOperand(buttonVal) {
     operand2 = operand2 + buttonVal
     displayToScreen(operand2);
-    operatorAfter2Mode = true;
+    isOpAfter2Mode = true;
 }
 
 function setFirstOperation(buttonVal) {
     if (buttonVal === "=") {
         console.log("not a valid operator");
-        operatorAfter1Mode = true;
+        isOpAfter1Mode = true;
         return;
     }
     calculatorStack.push(operand1, buttonVal);
     displayToScreen(operand1)
-    operatorAfter1Mode = false;
-    enterOp1Mode = false;
-    enterOp2Mode = true;
+    isOpAfter1Mode = false;
+    isOp1Mode = false;
+    isOp2Mode = true;
 }
 
 function setSecondOperation(buttonVal) {
@@ -124,23 +126,31 @@ function setSecondOperation(buttonVal) {
 
     console.log("result is", result)
 
+    if (result === "0 div") {
+        isOp1Mode = false;
+        isOp2Mode = false;
+        isOpAfter1Mode = false
+        isOpAfter2Mode = false
+        return
+    }
+
     if (buttonVal === "=") {
         calculatorStack.splice(0, 4, result);
         displayToScreen(result, "");
         isEqualClicked = true
-        operatorAfter1Mode = true;
-        enterOp1Mode = false;
-        enterOp2Mode = false;
+        isOpAfter1Mode = true;
+        isOp1Mode = false;
+        isOp2Mode = true;
     } else {
         calculatorStack.splice(0, 3, result);
         displayToScreen(result);
-        enterOp1Mode = false;
-        enterOp2Mode = true;
+        isOp1Mode = false;
+        isOp2Mode = true;
     }
     operand1 = result
     operand2 = "";
     //after equal if a number is pressed the equal number should be discarded
-    operatorAfter2Mode = false;
+    isOpAfter2Mode = false;
 
 }
 
@@ -148,7 +158,7 @@ function updateValues(buttonVal) {
 
     if (numbers.includes(buttonVal)) {
         if (isEqualClicked) {
-            enterOp1Mode = true;
+            isOp1Mode = true;
             calculatorStack.pop();
             operand1 = buttonVal;
             displayToScreen(buttonVal)
@@ -156,11 +166,11 @@ function updateValues(buttonVal) {
             return;
         }
         let isValidNum = false
-        if (enterOp1Mode) {
+        if (isOp1Mode) {
             isValidNum = checkNumValidity(buttonVal, operand1)
             if (isValidNum)
                 setFirstOperand(buttonVal);
-        } else if (enterOp2Mode) {
+        } else if (isOp2Mode) {
             isValidNum = checkNumValidity(buttonVal, operand2)
             if (isValidNum)
                 setSecondOperand(buttonVal);
@@ -176,40 +186,45 @@ function updateValues(buttonVal) {
             calculatorStack.push(buttonVal);
             displayToScreen(operand1)
             isEqualClicked = false;
-            enterOp2Mode = true;
+            isOp2Mode = true;
             return;
         }
 
         //in case op is entered again then user want to change operation
-        if (enterOp2Mode === true && operatorAfter1Mode === false) {
-            enterOp2Mode = false
-        }
+        // if (isOp2Mode === true && isOpAfter1Mode === false) {
+        //     isOp2Mode = false
+        // }
 
-        if (operatorAfter1Mode) {
+        if (isOpAfter1Mode) {
             if (operand1 !== "") {
                 setFirstOperation(buttonVal);
             }
         }
-        if (operatorAfter2Mode) {
+        if (isOpAfter2Mode) {
             if (operand2 !== "") {
                 setSecondOperation(buttonVal);
             }
         }
     } else if (otherOperators.includes(buttonVal)) {
-        if (enterOp1Mode) {
-            if (buttonVal === "⬅") {
-                operand1 = backSpace(operand1)
-            } else {
-                operand1 = negate(operand1);
+        if (isOp1Mode) {
+            if (operand1 !== "") {
+                if (buttonVal === "⬅") {
+                    operand1 = backSpace(operand1)
+                } else {
+                    operand1 = negate(operand1);
+                }
+                displayToScreen(operand1)
             }
-            displayToScreen(operand1)
-        } else if (enterOp2Mode) {
-            if (buttonVal === "⬅") {
-                operand2 = backSpace(operand2)
-            } else {
-                operand2 = negate(operand2);
+        } else if (isOp2Mode) {
+            if (operand2 !== "") {
+                if (buttonVal === "⬅") {
+                    operand2 = backSpace(operand2)
+                } else {
+                    operand2 = negate(operand2);
+                }
+                displayToScreen(operand2)
             }
-            displayToScreen(operand2)
+
         }
     }
     console.log(operand1, calculatorStack, operand2);
