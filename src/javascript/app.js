@@ -43,7 +43,13 @@ function negate(num) {
 
 function displayToScreen(numScreen, exprScreen = calculatorStack.join(" ")) {
     document.querySelector(".expression-display").textContent = exprScreen;
-    document.querySelector(".display-number").textContent = numScreen;
+    if (numScreen.length > 16) {
+        let roundedNum = numScreen.slice(0, 16);
+        document.querySelector(".display-number").textContent = roundedNum;
+    } else {
+        document.querySelector(".display-number").textContent = numScreen;
+    }
+
 }
 
 function backSpace(operand) {
@@ -198,7 +204,7 @@ function updateValues(buttonVal) {
         }
 
         // in case op is entered again then user want to change operation
-        if (isOp2Mode === true && isOpAfter1Mode === false) {
+        if (isOp2Mode === true && isOpAfter1Mode === false && operand2 === "") {
             isOp2Mode = false
             isOpAfter1Mode = true
             isChangeOp = true;
