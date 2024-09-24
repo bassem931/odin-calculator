@@ -1,4 +1,4 @@
-const numbers = "0123456789"
+const numbers = "0123456789."
 const operators = "+-*=÷"
 
 const calculatorStack = [];
@@ -37,44 +37,60 @@ function reset(){
     isOperand1Mode = true;
     isOperand2Mode = false;
     isOperatorMode = false;
+    document.querySelector(".display-number").textContent = "";
+    document.querySelector(".expression-display").textContent = "";
 }
 
+function getResult(op,num1,num2){
+    switch (op) {
+        case "+":return add(num1,num2)
+            break;
+        case "-":return subtract(num1,num2)
+            break;
+        case "*":return multiply(num1,num2)
+            break;
+        case "÷":return divide(num1,num2)
+            break;
+        default: //equal
+            break;
+    }
+}
+
+
 function updateValues (buttonVal){
+
     if(numbers.includes(buttonVal)){
         if(isOperand1Mode){
             operand1 = operand1 + buttonVal;
+            document.querySelector(".display-number").textContent = operand1;
         } else if(isOperand2Mode){
             operand2 = operand2 + buttonVal
+            document.querySelector(".display-number").textContent = operand2;
         }
+    
     } else if(operators.includes(buttonVal)){
         if(isOperand1Mode){
             if(buttonVal === "="){
                 console.log("not a valid operator");
             }
-            calculatorStack.push(operand1,buttonVal);
+            calculatorStack.push(operand1,buttonVal);  
+            document.querySelector(".expression-display").textContent = calculatorStack.join(" ");
         }
         if(isOperand2Mode ){
-            let result = "";
             calculatorStack.push(operand2,buttonVal);
-            switch (calculatorStack[1]) {
-                case "+":result = add(parseInt(calculatorStack[0]),parseInt(calculatorStack[2]))
-                    break;
-                case "-":result = subtract(parseInt(calculatorStack[0]),parseInt(calculatorStack[2]))
-                    break;
-                case "*":result = multiply(parseInt(calculatorStack[0]),parseInt(calculatorStack[2]))
-                    break;
-                case "/":result = divide(parseInt(calculatorStack[0]),parseInt(calculatorStack[2]))
-                    break;
-                default: //equal
-                    break;
-            }
+            let result = getResult(calculatorStack[1],parseInt(calculatorStack[0]),parseInt(calculatorStack[2]));
+
             console.log("result is",result)
+            document.querySelector(".display-number").textContent = result;
+            document.querySelector(".expression-display").textContent = "";
+
             if (buttonVal==="=") {
                 calculatorStack.splice(0,4,result);
             } else{
                 calculatorStack.splice(0,3,result);
             }
-
+            operand1=result.toString();
+            operand2="";
             //after equal if a number is pressed the equal number should be discarded
         }
 

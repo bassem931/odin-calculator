@@ -22,11 +22,38 @@
 
     <div class="flex justify-center">
         <section
-            class="calculator-body border-4 border-black w-48 sm:w-96 h-fit flex flex-col gap-3 sm:gap-6 p-3 sm:p-5 rounded-xl sm:rounded-2xl">
-            <div class="flex flex-row gap-1 sm:gap-2">
+            class="calculator-body border-4 border-black w-48 sm:w-96 h-fit flex flex-col gap-3 sm:gap-6 p-3 sm:p-5 rounded-xl sm:rounded-2xl box-border">
+            <div class="flex flex-row gap-1 overflow-hidden sm:gap-2 ">
+                <!-- p-3 sm:p-6 -->
                 <div
-                    class="calc-display border-4 border-black w-48 sm:w-96 h-16 sm:h-32 flex items-center p-3 sm:p-6 text-lg sm:text-4xl rounded-xl sm:rounded-2xl ">
-                    7474.848</div>
+                    class="calc-display box-border border-4 border-black w-48 sm:w-96 h-16 sm:h-32 text-lg overflow-hidden sm:text-4xl rounded-xl sm:rounded-2xl ">
+                    <div
+                        class="expression-display border-b-4 border-black w-40  h-1/4 text-sm  shrink-0 overflow-hidden sm:text-lg sm:w-80">
+                        2+2
+                    </div>
+                    <div class="display-number w-40 overflow-hidden sm:w-80">
+                        7474.848944894389
+                    </div>
+
+                </div>
+            </div>
+            <div class="flex flex-row gap-1 sm:gap-2">
+                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
+                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
+                    C
+                </div>
+                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
+                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
+                    ^
+                </div>
+                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
+                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
+                    ∓
+                </div>
+                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
+                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
+                    ⬅
+                </div>
             </div>
             <div class="flex flex-row gap-1 sm:gap-2">
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
@@ -43,7 +70,7 @@
                 </div>
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
                     sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    ÷
+                    +
                 </div>
             </div>
             <div class="flex flex-row gap-1 sm:gap-2">
@@ -85,7 +112,7 @@
             <div class="flex flex-row gap-1 sm:gap-2">
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
                     sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    C
+                    ÷
                 </div>
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
                     sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
@@ -93,31 +120,13 @@
                 </div>
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
                     sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    =
-                </div>
-                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
-                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    +
-                </div>
-            </div>
-            <!-- <div class="flex flex-row gap-1 sm:gap-2">
-                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
-                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    ⬅
-                </div>
-                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
-                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
                     .
                 </div>
                 <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
                     sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    ∓
+                    =
                 </div>
-                <div class="calc-button border-4 border-black size-10 sm:size-20 flex justify-center items-center text-xl
-                    sm:text-5xl cursor-pointer rounded-xl sm:rounded-2xl">
-                    ^
-                </div>
-            </div> -->
+            </div>
     </div>
     </section>
     </div>
