@@ -70,9 +70,13 @@ function getResult(op, num1, num2) {
 }
 
 function checkNumValidity(buttonVal, num) {
+    if (buttonVal === "." && num === "") {
+        return false;
+    }
     if (buttonVal === "." && !num.includes(".")) {
         return true;
     }
+
     num = ("" + num) + ("" + buttonVal);
     //optional minus sign and decimal point with \d being 0 to 9
     const onlyNumRegex = /^-?\d+(\.\d+)?$/;
