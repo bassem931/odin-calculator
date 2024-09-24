@@ -6,11 +6,13 @@ let operand1="";
 let operator="";
 let operand2="";
 
-let isOperand1Mode = true;
-let isOperand2Mode = false;
-let isOperatorMode = false;
+let enterOp1Mode = true;
+let enterOp2Mode = false;
+let operatorAfter1Mode = false;
+let operatorAfter2Mode = false;
 
 function add(a,b) {
+    console.log(a+b,a,b);
     return a+b;
 }
 
@@ -29,16 +31,21 @@ function divide(a,b) {
     return a/b;
 }
 
+function displayToScreen(numScreen,exprScreen = calculatorStack.join(" ")) {
+    document.querySelector(".expression-display").textContent = exprScreen;
+    document.querySelector(".display-number").textContent = numScreen;
+    
+}
+
 function reset(){
     calculatorStack.length =0;
     operand1="";
     operator="";
     operand2="";
-    isOperand1Mode = true;
-    isOperand2Mode = false;
+    enterOp1Mode = true;
+    enterOp2Mode = false;
     isOperatorMode = false;
-    document.querySelector(".display-number").textContent = "";
-    document.querySelector(".expression-display").textContent = "";
+    displayToScreen("");
 }
 
 function getResult(op,num1,num2){
@@ -60,43 +67,55 @@ function getResult(op,num1,num2){
 function updateValues (buttonVal){
 
     if(numbers.includes(buttonVal)){
-        if(isOperand1Mode){
+        if(enterOp1Mode){
             operand1 = operand1 + buttonVal;
-            document.querySelector(".display-number").textContent = operand1;
-        } else if(isOperand2Mode){
+            displayToScreen(operand1);
+            operatorAfter1Mode = true;
+        } else if(enterOp2Mode){
             operand2 = operand2 + buttonVal
-            document.querySelector(".display-number").textContent = operand2;
+            displayToScreen(operand2);
+            operatorAfter2Mode = true;
         }
     
     } else if(operators.includes(buttonVal)){
-        if(isOperand1Mode){
+        if(operatorAfter1Mode){
             if(buttonVal === "="){
                 console.log("not a valid operator");
             }
-            calculatorStack.push(operand1,buttonVal);  
-            document.querySelector(".expression-display").textContent = calculatorStack.join(" ");
+            calculatorStack.push(operand1,buttonVal); 
+            displayToScreen(operand1)
+            operatorAfter1Mode = false;
+            enterOp1Mode = false;
+            enterOp2Mode = true;
         }
-        if(isOperand2Mode ){
+        if(operatorAfter2Mode ){
+
             calculatorStack.push(operand2,buttonVal);
-            let result = getResult(calculatorStack[1],parseInt(calculatorStack[0]),parseInt(calculatorStack[2]));
+
+            let result = getResult(calculatorStack[1],parseFloat(calculatorStack[0]),parseFloat(calculatorStack[2]));
+            result = ""+ result
 
             console.log("result is",result)
-            document.querySelector(".display-number").textContent = result;
-            document.querySelector(".expression-display").textContent = "";
 
             if (buttonVal==="=") {
                 calculatorStack.splice(0,4,result);
+                displayToScreen(result,"");
+                // enterOp1Mode = 
             } else{
                 calculatorStack.splice(0,3,result);
+                displayToScreen(result);
             }
-            operand1=result.toString();
+            operand1=result
             operand2="";
             //after equal if a number is pressed the equal number should be discarded
+            operatorAfter2Mode = false;
+            enterOp1Mode = true;
+            enterOp1Mode = false;
         }
 
         //update flags here to prevent entering both if conditions;
-        isOperand1Mode = !isOperand1Mode;
-        isOperand2Mode = !isOperand2Mode;
+        // enterOp1Mode = !enterOp1Mode;
+        // enterOp2Mode = !enterOp2Mode;
     }
     console.log(operand1,calculatorStack,operand2);
     
