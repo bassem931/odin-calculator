@@ -127,10 +127,13 @@ function setSecondOperation(buttonVal) {
     console.log("result is", result)
 
     if (result === "0 div") {
-        isOp1Mode = false;
+        isOp1Mode = true;
         isOp2Mode = false;
         isOpAfter1Mode = false
         isOpAfter2Mode = false
+        calculatorStack.splice(0, calculatorStack.length)
+        operand1 = "";
+        operand2 = "";
         return
     }
 
