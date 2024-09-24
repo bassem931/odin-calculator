@@ -11,6 +11,7 @@ let isOp2Mode = false;
 let isOpAfter1Mode = false;
 let isOpAfter2Mode = false;
 let isEqualClicked = false;
+let isChangeOp = false;
 
 function add(a, b) {
     return a + b;
@@ -111,6 +112,10 @@ function setFirstOperation(buttonVal) {
         isOpAfter1Mode = true;
         return;
     }
+    if (isChangeOp) {
+        calculatorStack.splice(0, calculatorStack.length);
+        isChangeOp = false;
+    }
     calculatorStack.push(operand1, buttonVal);
     displayToScreen(operand1)
     isOpAfter1Mode = false;
@@ -152,7 +157,6 @@ function setSecondOperation(buttonVal) {
     }
     operand1 = result
     operand2 = "";
-    //after equal if a number is pressed the equal number should be discarded
     isOpAfter2Mode = false;
 
 }
@@ -193,10 +197,12 @@ function updateValues(buttonVal) {
             return;
         }
 
-        //in case op is entered again then user want to change operation
-        // if (isOp2Mode === true && isOpAfter1Mode === false) {
-        //     isOp2Mode = false
-        // }
+        // in case op is entered again then user want to change operation
+        if (isOp2Mode === true && isOpAfter1Mode === false) {
+            isOp2Mode = false
+            isOpAfter1Mode = true
+            isChangeOp = true;
+        }
 
         if (isOpAfter1Mode) {
             if (operand1 !== "") {
