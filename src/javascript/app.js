@@ -42,14 +42,19 @@ function negate(num) {
 }
 
 function displayToScreen(numScreen, exprScreen = calculatorStack.join(" ")) {
-    document.querySelector(".expression-display").textContent = exprScreen;
-    if (numScreen.length > 16) {
+    if (numScreen.length < 16) {
+        document.querySelector(".display-number").textContent = numScreen;
+    }
+    else if (numScreen.length > 16 && !numScreen.includes("e")) {
         let roundedNum = numScreen.slice(0, 16);
         document.querySelector(".display-number").textContent = roundedNum;
     } else {
-        document.querySelector(".display-number").textContent = numScreen;
+        let exponent = numScreen.match(new RegExp(/([Ee]([+-]?\d+))/, 'g'));
+        exponent = exponent[0];
+        console.log(exponent);
+        document.querySelector(".display-number").textContent = numScreen.slice(0, numScreen.length - exponent.length - 5) + exponent;
     }
-
+    document.querySelector(".expression-display").textContent = exprScreen;
 }
 
 function backSpace(operand) {
@@ -93,7 +98,6 @@ function checkNumValidity(buttonVal, num) {
     num = ("" + num) + ("" + buttonVal);
     //optional minus sign and decimal point with \d being 0 to 9
     const onlyNumRegex = /^-?\d+(\.\d+)?$/;
-    console.log(onlyNumRegex.test(num), num, buttonVal);
     if (onlyNumRegex.test(num)) {
         return true;
     }
@@ -114,7 +118,6 @@ function setSecondOperand(buttonVal) {
 
 function setFirstOperation(buttonVal) {
     if (buttonVal === "=") {
-        console.log("not a valid operator");
         isOpAfter1Mode = true;
         return;
     }
@@ -124,9 +127,10 @@ function setFirstOperation(buttonVal) {
     }
     calculatorStack.push(operand1, buttonVal);
     displayToScreen(operand1)
-    isOpAfter1Mode = false;
     isOp1Mode = false;
+    isOpAfter1Mode = false;
     isOp2Mode = true;
+    isOpAfter2Mode = false;
 }
 
 function setSecondOperation(buttonVal) {
@@ -134,8 +138,6 @@ function setSecondOperation(buttonVal) {
 
     let result = getResult(calculatorStack[1], parseFloat(calculatorStack[0]), parseFloat(calculatorStack[2]));
     result = "" + result
-
-    console.log("result is", result)
 
     if (result === "0 div") {
         isOp1Mode = true;
@@ -153,18 +155,16 @@ function setSecondOperation(buttonVal) {
         displayToScreen(result, "");
         isEqualClicked = true
         isOpAfter1Mode = true;
-        isOp1Mode = false;
-        isOp2Mode = true;
     } else {
         calculatorStack.splice(0, 3, result);
         displayToScreen(result);
-        isOp1Mode = false;
         isOp2Mode = true;
+
     }
     operand1 = result
     operand2 = "";
     isOpAfter2Mode = false;
-
+    isOp1Mode = false;
 }
 
 function updateValues(buttonVal) {
@@ -242,7 +242,6 @@ function updateValues(buttonVal) {
 
         }
     }
-    console.log(operand1, calculatorStack, operand2);
 }
 
 
