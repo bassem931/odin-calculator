@@ -200,6 +200,8 @@ function updateValues(buttonVal) {
             displayToScreen(operand1)
             isEqualClicked = false;
             isOp2Mode = true;
+            isOpAfter1Mode = false;
+            //
             return;
         }
 
